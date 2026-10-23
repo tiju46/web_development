@@ -10,3 +10,20 @@ FleetGuard IS provides small-to-medium logistics operators with a centralized pl
 -> Complete CRUD Capabilities: Create, Read, Update, and Delete operations implemented across Vehicles and Work Orders.
 -> Third-Party External API Consumption: Automated currency normalization to EUR using the Frankfurter FX API.
 -> RESTful Security: Stateless session tokens via JSON Web Tokens (JWT) and salted password hashing with bcryptjs.
+
+2. System Architecture & Tech Stack
+
+# Layer         Technology                          
+Frontend        React 19 (Vite), React Router,  Axios, Lucide React    
+                                                 
+Backend         Node.js, Express.js                 
+Database        MongoDB Atlas 
+External API    Frankfurter API 
+Authentication  JWT (jsonwebtoken) & bcryptjs
+
+3. Local Setup Instructions
+
+# Prerequisites
+Node.js (v18+ or v24+)
+Free MongoDB Atlas Cluster
+Git
