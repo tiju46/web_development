@@ -72,7 +72,15 @@ const Vehicles = () => {
     }
   };
 
- 
+  const handleDeleteVehicle = async (id) => {
+    if (!window.confirm('Are you sure you want to remove this vehicle from the fleet?')) return;
+    try {
+      await API.delete(`/vehicles/${id}`);
+      fetchVehicles();
+    } catch (err) {
+      setError(err.response?.data?.error || 'Failed to delete vehicle');
+    }
+  };
 
   const getStatusBadge = (status) => {
     switch (status) {
@@ -192,5 +200,70 @@ const Vehicles = () => {
         </div>
       )}
 
+      {/* Fleet Table */}
+      <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+        {loading ? (
+          <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+            <RefreshCw size={20} className="spin" style={{ marginBottom: '0.5rem' }} />
+            <p>Loading fleet inventory...</p>
+          </div>
+        ) : vehicles.length === 0 ? (
+          <div style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>
+            <Truck size={40} style={{ opacity: 0.3, marginBottom: '0.5rem' }} />
+            <p>No vehicles registered in the fleet yet.</p>
+          </div>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>Registration</th>
+                <th>Make & Model</th>
+                <th>Year</th>
+                <th>Mileage</th>
+                <th>Status</th>
+                <th style={{ textAlign: 'right' }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {vehicles.map((v) => (
+                <tr key={v._id}>
+                  <td style={{ fontWeight: 600, color: '#0f172a' }}>{v.regNumber}</td>
+                  <td>{v.make} {v.model}</td>
+                  <td>{v.year}</td>
+                  <td>{Number(v.mileage).toLocaleString()} km</td>
+                  <td>{getStatusBadge(v.status)}</td>
+                  <td style={{ textAlign: 'right' }}>
+                    <div style={{ display: 'inline-flex', gap: '0.5rem' }}>
+                      <button
+                        onClick={() => handleStatusUpdate(v._id, v.status)}
+                        className="btn btn-ghost"
+                        style={{ padding: '0.35rem 0.6rem', fontSize: '0.8rem' }}
+                        title="Cycle Status (Roadworthy -> Maintenance -> Grounded)"
+                      >
+                        <Edit3 size={14} />
+                        <span>Status</span>
+                      </button>
+
+                      {user?.role === 'Manager' && (
+                        <button
+                          onClick={() => handleDeleteVehicle(v._id)}
+                          className="btn btn-ghost"
+                          style={{ padding: '0.35rem 0.6rem', fontSize: '0.8rem', color: '#ef4444' }}
+                          title="Remove vehicle"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default Vehicles;
