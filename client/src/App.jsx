@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Vehicles from './pages/Vehicles';
 
 // Protected Route wrapper
 const ProtectedRoute = ({ children }) => {
@@ -24,17 +25,10 @@ function App() {
           <Route
             path="/vehicles"
             element={
-              <ProtectedRoute>
-                <div className="container">
-                  <div className="card">
-                    <h2>Fleet Vehicles Dashboard</h2>
-                    <p style={{ marginTop: '0.5rem', color: '#64748b' }}>
-                      Vehicles list and management view will render here.
-                    </p>
-                  </div>
-                </div>
-              </ProtectedRoute>
-            }
+                <ProtectedRoute>
+                <Vehicles />
+                </ProtectedRoute>
+               }
           />
           <Route
             path="/work-orders"
