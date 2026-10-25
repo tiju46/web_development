@@ -256,3 +256,65 @@ body {
   color: var(--success);
   border: 1px solid #a7f3d0;
 }
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+}
+
+th, td {
+  padding: 1rem 1.5rem;
+  vertical-align: middle;
+}
+
+th {
+  background-color: #f8fafc;
+  color: #475569;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+td {
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.925rem;
+  color: #1e293b;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background-color: #f8fafc;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+.badge-green {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.badge-orange {
+  background-color: #ffedd5;
+  color: #c2410c;
+}
+
+.badge-red {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
