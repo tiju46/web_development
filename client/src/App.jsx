@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Vehicles from './pages/Vehicles';
+import WorkOrders from './pages/WorkOrders';
 
 // Protected Route wrapper
 const ProtectedRoute = ({ children }) => {
@@ -34,16 +35,9 @@ function App() {
             path="/work-orders"
             element={
               <ProtectedRoute>
-                <div className="container">
-                  <div className="card">
-                    <h2>Maintenance & Work Orders</h2>
-                    <p style={{ marginTop: '0.5rem', color: '#64748b' }}>
-                      Work orders and live currency conversion will render here.
-                    </p>
-                  </div>
-                </div>
+              <WorkOrders />
               </ProtectedRoute>
-            }
+                    }
           />
         </Routes>
       </BrowserRouter>
