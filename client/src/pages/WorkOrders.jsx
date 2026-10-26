@@ -110,6 +110,7 @@ const WorkOrders = () => {
         </div>
       )}
 
+
       {showAddForm && user?.role === 'Manager' && (
         <div className="card" style={{ borderLeft: '4px solid #2563eb' }}>
           <h3 style={{ marginBottom: '1rem', fontSize: '1.15rem' }}>Create Maintenance Ticket</h3>
@@ -194,9 +195,72 @@ const WorkOrders = () => {
           </form>
         </div>
       )}
-
-      
-      
+      <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+        {loading ? (
+          <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+            <p>Loading work orders...</p>
+          </div>
+        ) : workOrders.length === 0 ? (
+          <div style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>
+            <Wrench size={40} style={{ opacity: 0.3, marginBottom: '0.5rem' }} />
+            <p>No active maintenance tickets logged.</p>
+          </div>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>Vehicle</th>
+                <th>Issue / Details</th>
+                <th>Original Cost</th>
+                <th>Normalized (EUR)</th>
+                <th>Status</th>
+                <th style={{ textAlign: 'right' }}>Update</th>
+              </tr>
+            </thead>
+            <tbody>
+              {workOrders.map((order) => (
+                <tr key={order._id}>
+                  <td style={{ fontWeight: 600 }}>
+                    {order.vehicle?.regNumber || 'Unknown Vehicle'}
+                    <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 400 }}>
+                      {order.vehicle?.make} {order.vehicle?.model}
+                    </div>
+                  </td>
+                  <td>
+                    <div style={{ fontWeight: 600, color: '#0f172a' }}>{order.title}</div>
+                    <div style={{ fontSize: '0.8rem', color: '#64748b' }}>{order.description}</div>
+                  </td>
+                  <td>
+                    {order.cost} {order.currency}
+                  </td>
+                  <td style={{ fontWeight: 600, color: '#0284c7' }}>
+                    €{Number(order.costInEUR || order.cost).toFixed(2)}
+                  </td>
+                  <td>{getStatusBadge(order.status)}</td>
+                  <td style={{ textAlign: 'right' }}>
+                    {order.status !== 'Completed' ? (
+                      <button
+                        onClick={() => handleStatusUpdate(order._id, order.status)}
+                        className="btn btn-ghost"
+                        style={{ padding: '0.35rem 0.6rem', fontSize: '0.8rem' }}
+                        title="Advance progress"
+                      >
+                        <span>{order.status === 'Pending' ? 'Start' : 'Complete'}</span>
+                        <ArrowRight size={14} />
+                      </button>
+                    ) : (
+                      <span style={{ fontSize: '0.8rem', color: '#10b981', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                        <CheckCircle size={14} /> Closed
+                      </span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
   );
 };
 
