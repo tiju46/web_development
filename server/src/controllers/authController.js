@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 // Register a new user (Manager or Technician)
-exports.register = async (req, res) => {
+const register = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
 
@@ -32,7 +32,7 @@ exports.register = async (req, res) => {
 };
 
 // Login user
-exports.login = async (req, res) => {
+const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -60,3 +60,36 @@ exports.login = async (req, res) => {
     res.status(500).json({ error: 'Login failed', details: err.message });
   }
 };
+
+// Get all users (Manager only)
+const getUsers = async (req, res) => {
+  try {
+    const users = await User.find({}, '-password').sort({ createdAt: -1 });
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to retrieve team members' });
+  }
+};
+
+// Delete user account (Manager only)
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Prevent manager from deleting their own active profile
+    if (req.user && req.user.id === id) {
+      return res.status(400).json({ error: 'Cannot delete your own active administrator account' });
+    }
+
+    const deleted = await User.findByIdAndDelete(id);
+    if (!deleted) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({ message: 'User account removed successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete user account' });
+  }
+};
+
+module.exports = { register, login, getUsers, deleteUser };

@@ -6,8 +6,9 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Vehicles from './pages/Vehicles';
 import WorkOrders from './pages/WorkOrders';
+import Technicians from './pages/Technicians';
 
-// Protected Route wrapper
+
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
   return user ? children : <Navigate to="/login" replace />;
@@ -38,6 +39,14 @@ function App() {
               <WorkOrders />
               </ProtectedRoute>
                     }
+          />
+          <Route
+            path="/technicians"
+            element={
+              <ProtectedRoute>
+              <Technicians />
+              </ProtectedRoute>
+                      }
           />
         </Routes>
       </BrowserRouter>
