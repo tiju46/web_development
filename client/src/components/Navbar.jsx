@@ -23,31 +23,36 @@ const Navbar = () => {
 
       <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
         {user ? (
-          <>
-            <NavLink to="/vehicles" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
-              <Truck size={15} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'text-bottom' }} />
-              Vehicles
-            </NavLink>
-            <NavLink to="/work-orders" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
-              <Wrench size={15} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'text-bottom' }} />
-              Work Orders
-            </NavLink>
+  <>
+    <NavLink to="/vehicles" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
+      <Truck size={15} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'text-bottom' }} />
+      Vehicles
+    </NavLink>
+    <NavLink to="/work-orders" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
+      <Wrench size={15} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'text-bottom' }} />
+      Work Orders
+    </NavLink>
+    {user.role === 'Manager' && (
+      <NavLink to="/technicians" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
+        Technicians
+      </NavLink>
+    )}
 
-            <div className="user-badge">
-              <ShieldCheck size={14} color="#38bdf8" />
-              <span>{user.name}</span>
-              <span style={{ opacity: 0.6 }}>•</span>
-              <span style={{ color: user.role === 'Manager' ? '#fbbf24' : '#a3e635' }}>
-                {user.role}
-              </span>
-            </div>
+    <div className="user-badge">
+      <ShieldCheck size={14} color="#38bdf8" />
+      <span>{user.name}</span>
+      <span style={{ opacity: 0.6 }}>•</span>
+      <span style={{ color: user.role === 'Manager' ? '#fbbf24' : '#a3e635' }}>
+        {user.role}
+      </span>
+    </div>
 
-            <button onClick={handleLogout} className="btn btn-ghost" style={{ color: '#ef4444' }} title="Sign Out">
-              <LogOut size={16} />
-              <span>Logout</span>
-            </button>
-          </>
-        ) : (
+    <button onClick={handleLogout} className="btn btn-ghost" style={{ color: '#ef4444' }} title="Sign Out">
+      <LogOut size={16} />
+      <span>Logout</span>
+    </button>
+  </>
+) : (
           <>
             <NavLink 
               to="/login" 
