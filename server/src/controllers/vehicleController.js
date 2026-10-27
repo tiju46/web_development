@@ -35,18 +35,22 @@ exports.createVehicle = async (req, res) => {
   }
 };
 
-// Update vehicle (mileage or status)
+// Update vehicle (all fields: regNumber, make, model, year, mileage, status)
 exports.updateVehicle = async (req, res) => {
   try {
-    const { mileage, status } = req.body;
+    const { regNumber, make, model, year, mileage, status } = req.body;
     const vehicle = await Vehicle.findById(req.params.id);
 
     if (!vehicle) {
       return res.status(404).json({ error: 'Vehicle not found' });
     }
 
+    if (regNumber !== undefined) vehicle.regNumber = regNumber;
+    if (make !== undefined) vehicle.make = make;
+    if (model !== undefined) vehicle.model = model;
+    if (year !== undefined) vehicle.year = year;
     if (mileage !== undefined) vehicle.mileage = mileage;
-    if (status) vehicle.status = status;
+    if (status !== undefined) vehicle.status = status;
 
     const updated = await vehicle.save();
     res.status(200).json({ message: 'Vehicle updated', vehicle: updated });

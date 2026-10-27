@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import API from '../api/axios';
 import { useAuth } from '../context/AuthContext';
-import { Truck, Plus, Trash2, Edit3, AlertCircle, RefreshCw } from 'lucide-react';
+import { Truck, Plus, Trash2, Edit2, AlertCircle, RefreshCw, X, Check } from 'lucide-react';
 
 const Vehicles = () => {
   const { user } = useAuth();
@@ -9,16 +9,19 @@ const Vehicles = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   
-  // New vehicle form state (Manager only)
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [formData, setFormData] = useState({
+
+  const [showForm, setShowForm] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+
+  const initialForm = {
     regNumber: '',
     make: '',
     model: '',
     year: new Date().getFullYear(),
     mileage: '',
     status: 'Roadworthy',
-  });
+  };
+  const [formData, setFormData] = useState(initialForm);
 
   const fetchVehicles = async () => {
     try {
@@ -37,38 +40,39 @@ const Vehicles = () => {
     fetchVehicles();
   }, []);
 
-  const handleCreateVehicle = async (e) => {
-    e.preventDefault();
-    try {
-      await API.post('/vehicles', formData);
-      setFormData({
-        regNumber: '',
-        make: '',
-        model: '',
-        year: new Date().getFullYear(),
-        mileage: '',
-        status: 'Roadworthy',
-      });
-      setShowAddForm(false);
-      fetchVehicles();
-    } catch (err) {
-      setError(err.response?.data?.error || 'Failed to register vehicle');
-    }
+  const handleOpenCreate = () => {
+    setEditingId(null);
+    setFormData(initialForm);
+    setShowForm(true);
   };
 
-  const handleStatusUpdate = async (id, currentStatus) => {
-    const nextStatus =
-      currentStatus === 'Roadworthy'
-        ? 'Under Maintenance'
-        : currentStatus === 'Under Maintenance'
-        ? 'Grounded'
-        : 'Roadworthy';
+  const handleOpenEdit = (vehicle) => {
+    setEditingId(vehicle._id);
+    setFormData({
+      regNumber: vehicle.regNumber,
+      make: vehicle.make,
+      model: vehicle.model,
+      year: vehicle.year,
+      mileage: vehicle.mileage,
+      status: vehicle.status,
+    });
+    setShowForm(true);
+  };
 
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
     try {
-      await API.put(`/vehicles/${id}`, { status: nextStatus });
+      if (editingId) {
+        await API.put(`/vehicles/${editingId}`, formData);
+      } else {
+        await API.post('/vehicles', formData);
+      }
+      setShowForm(false);
+      setEditingId(null);
+      setFormData(initialForm);
       fetchVehicles();
     } catch (err) {
-      setError(err.response?.data?.error || 'Failed to update vehicle status');
+      setError(err.response?.data?.error || 'Failed to save vehicle details');
     }
   };
 
@@ -101,17 +105,14 @@ const Vehicles = () => {
         <div>
           <h1 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#0f172a' }}>Fleet Inventory</h1>
           <p style={{ color: '#64748b', fontSize: '0.9rem', marginTop: '0.25rem' }}>
-            Live roadworthiness monitoring and vehicle records
+            Live roadworthiness monitoring, mileage logging, and vehicle records
           </p>
         </div>
 
         {user?.role === 'Manager' && (
-          <button
-            onClick={() => setShowAddForm(!showAddForm)}
-            className="btn btn-primary"
-          >
+          <button onClick={handleOpenCreate} className="btn btn-primary">
             <Plus size={16} />
-            <span>{showAddForm ? 'Close Form' : 'Add Vehicle'}</span>
+            <span>Add Vehicle</span>
           </button>
         )}
       </div>
@@ -123,11 +124,21 @@ const Vehicles = () => {
         </div>
       )}
 
-      {/* Manager Form to Add New Vehicle */}
-      {showAddForm && user?.role === 'Manager' && (
-        <div className="card" style={{ borderLeft: '4px solid #2563eb' }}>
-          <h3 style={{ marginBottom: '1rem', fontSize: '1.15rem' }}>Register New Vehicle</h3>
-          <form onSubmit={handleCreateVehicle} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+      
+      {showForm && (
+        <div className="card" style={{ borderLeft: `4px solid ${editingId ? '#10b981' : '#2563eb'}` }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <h3 style={{ fontSize: '1.15rem' }}>{editingId ? 'Edit Vehicle Details' : 'Register New Vehicle'}</h3>
+            <button
+              onClick={() => { setShowForm(false); setEditingId(null); }}
+              className="btn btn-ghost"
+              style={{ padding: '0.25rem' }}
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          <form onSubmit={handleFormSubmit} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
             <div className="form-group">
               <label>Registration Number</label>
               <input
@@ -143,7 +154,7 @@ const Vehicles = () => {
               <input
                 type="text"
                 required
-                placeholder="e.g. Ford / Scania"
+                placeholder="e.g. Ford / Toyota"
                 value={formData.make}
                 onChange={(e) => setFormData({ ...formData, make: e.target.value })}
               />
@@ -153,7 +164,7 @@ const Vehicles = () => {
               <input
                 type="text"
                 required
-                placeholder="e.g. Transit"
+                placeholder="e.g. Transit / Innova"
                 value={formData.model}
                 onChange={(e) => setFormData({ ...formData, model: e.target.value })}
               />
@@ -181,7 +192,7 @@ const Vehicles = () => {
               />
             </div>
             <div className="form-group">
-              <label>Initial Status</label>
+              <label>Status</label>
               <select
                 value={formData.status}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value })}
@@ -191,9 +202,17 @@ const Vehicles = () => {
                 <option value="Grounded">Grounded</option>
               </select>
             </div>
-            <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
+            <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '0.5rem' }}>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => { setShowForm(false); setEditingId(null); }}
+              >
+                Cancel
+              </button>
               <button type="submit" className="btn btn-primary">
-                Save to Fleet
+                <Check size={16} />
+                <span>{editingId ? 'Update Vehicle' : 'Save to Fleet'}</span>
               </button>
             </div>
           </form>
@@ -233,15 +252,14 @@ const Vehicles = () => {
                   <td>{Number(v.mileage).toLocaleString()} km</td>
                   <td>{getStatusBadge(v.status)}</td>
                   <td style={{ textAlign: 'right' }}>
-                    <div style={{ display: 'inline-flex', gap: '0.5rem' }}>
+                    <div style={{ display: 'inline-flex', gap: '0.4rem' }}>
                       <button
-                        onClick={() => handleStatusUpdate(v._id, v.status)}
+                        onClick={() => handleOpenEdit(v)}
                         className="btn btn-ghost"
-                        style={{ padding: '0.35rem 0.6rem', fontSize: '0.8rem' }}
-                        title="Cycle Status (Roadworthy -> Maintenance -> Grounded)"
+                        style={{ padding: '0.35rem 0.6rem', fontSize: '0.8rem', color: '#2563eb' }}
+                        title="Edit Vehicle Details"
                       >
-                        <Edit3 size={14} />
-                        <span>Status</span>
+                        <Edit2 size={15} />
                       </button>
 
                       {user?.role === 'Manager' && (
@@ -251,7 +269,7 @@ const Vehicles = () => {
                           style={{ padding: '0.35rem 0.6rem', fontSize: '0.8rem', color: '#ef4444' }}
                           title="Remove vehicle"
                         >
-                          <Trash2 size={14} />
+                          <Trash2 size={15} />
                         </button>
                       )}
                     </div>
