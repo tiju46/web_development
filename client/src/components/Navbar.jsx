@@ -39,12 +39,16 @@ const Navbar = () => {
     )}
 
     <div className="user-badge">
-      <ShieldCheck size={14} color="#38bdf8" />
+        {user.role === 'Manager' ? (
+          <ShieldCheck size={14} color="#38bdf8" />
+        ) : (
+          <Wrench size={14} color="#a3e635" />
+      )}
       <span>{user.name}</span>
       <span style={{ opacity: 0.6 }}>•</span>
       <span style={{ color: user.role === 'Manager' ? '#fbbf24' : '#a3e635' }}>
         {user.role}
-      </span>
+       </span>
     </div>
 
     <button onClick={handleLogout} className="btn btn-ghost" style={{ color: '#ef4444' }} title="Sign Out">
