@@ -48,29 +48,61 @@ exports.createWorkOrder = async (req, res) => {
   }
 };
 
-// Update work order status (Pending -> In Progress -> Completed)
 exports.updateWorkOrderStatus = async (req, res) => {
   try {
-    const { status } = req.body;
+    const { vehicleId, title, description, cost, currency, status } = req.body;
     const order = await WorkOrder.findById(req.params.id);
 
     if (!order) {
       return res.status(404).json({ error: 'Work order not found' });
     }
 
-    if (status) order.status = status;
-    await order.save();
+    if (title !== undefined) order.title = title;
+    if (description !== undefined) order.description = description;
 
-    // If order is completed, return vehicle status to Roadworthy
-    if (status === 'Completed') {
-      const vehicle = await Vehicle.findById(order.vehicle);
-      if (vehicle) {
-        vehicle.status = 'Roadworthy';
-        await vehicle.save();
+    // Handle vehicle reassignment if vehicleId provided
+    if (vehicleId && vehicleId !== String(order.vehicle)) {
+      const newVehicle = await Vehicle.findById(vehicleId);
+      if (!newVehicle) {
+        return res.status(404).json({ error: 'Target vehicle does not exist' });
+      }
+      order.vehicle = vehicleId;
+    }
+
+    const costChanged = cost !== undefined && Number(cost) !== order.cost;
+    const currencyChanged = currency && currency.toUpperCase() !== order.currency;
+
+    if (costChanged || currencyChanged) {
+      const activeCost = cost !== undefined ? Number(cost) : order.cost;
+      const activeCurrency = currency ? currency.toUpperCase() : order.currency;
+
+      order.cost = activeCost;
+      order.currency = activeCurrency;
+      order.costInEUR = await convertToEUR(activeCost, activeCurrency);
+    }
+
+    if (status && status !== order.status) {
+      order.status = status;
+
+      if (status === 'Completed') {
+        const vehicle = await Vehicle.findById(order.vehicle);
+        if (vehicle) {
+          vehicle.status = 'Roadworthy';
+          await vehicle.save();
+        }
+      } else if (status === 'In Progress' || status === 'Pending') {
+        const vehicle = await Vehicle.findById(order.vehicle);
+        if (vehicle && vehicle.status === 'Roadworthy') {
+          vehicle.status = 'Under Maintenance';
+          await vehicle.save();
+        }
       }
     }
 
-    res.status(200).json({ message: 'Work order status updated', order });
+    await order.save();
+    const populated = await WorkOrder.findById(order._id).populate('vehicle', 'regNumber make model status');
+
+    res.status(200).json({ message: 'Work order updated', order: populated });
   } catch (err) {
     res.status(500).json({ error: 'Failed to update work order', details: err.message });
   }
