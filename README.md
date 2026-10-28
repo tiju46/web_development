@@ -91,6 +91,38 @@ Password
 
 Role Selection (Manager or Technician)
 
+# 3.3 Navigation Bar — Navbar.jsx
+Persistent top-level navigation that dynamically adapts links and actions based on the active user session.   
+Features:
+Displays application branding (FleetGuard IS) with truck icon.  
+Role-aware route switching (displays Technicians tab exclusively to Managers). 
+Visual User Badge:
+    Blue shield icon for Manager.   
+    Green wrench icon for Technician.
+Red logout action clearing active tokens from memory and storage
+
+# 3.4 Fleet Inventory Dashboard — Vehicles.jsx
+The primary hub for monitoring asset health, roadworthiness, and mileage across all registered vehicles.   
+Features:
+    Tabular display of vehicle registration numbers, make, model, year, and mileage.   
+    Dynamic status badges:
+        Green for Roadworthy
+        Orange for Under Maintenance
+        Red for Grounded
+    Row-level edit controls allowing authorized updates to vehicle parameters.
+    Restricts vehicle registration and deletion actions to Manager profiles.   
+# 3.5 Add / Edit / Delete Vehicle
+Admins and authorized users can modify fleet records directly using interactive form cards.
+
+# 3.6 Work Orders & Maintenance Hub — WorkOrders.jsx
+The operational workshop board where repair tickets are logged, tracked, and cost-audited.   Features:
+    Displays target vehicle details (populated via Mongoose relations).   
+    Lists diagnostic descriptions, original currency amounts, normalized EUR values, and status lifecycle markers.   
+    One-click workflow triggers enabling Technicians to step ticket statuses (Pending-> In Progress -> Completed).   
+    Automatic vehicle status synchronization.   
+# 3.7 Add / Edit / Delete Work Order
+Enables comprehensive ticket tracking and financial auditing.
+
 # 3. Local Setup Instructions
 
 - Prerequisites
