@@ -1,7 +1,40 @@
 # FleetGuard IS – Fleet Maintenance & Roadworthiness Tracker
-A lightweight, role-based MERN stack web application built for fleet management, maintenance scheduling, and vehicle roadworthiness tracking. Developed as a Continuous Assessment artifact for the B9IS130 Web Development module.
+A lightweight, role-based MERN stack web application built for fleet management, maintenance scheduling, and vehicle roadworthiness tracking,schedule mechanical repairs, manage technician staff directories, and normalize cross-border maintenance expenditures in real time
 
-# 1. Project Overview
+# Table of Contents
+1. Overview
+
+2. System Architecture & Tech Stack
+
+3. Frontend Views & Features
+
+    - Login View (Login.jsx)
+
+    - Create Account View (Register.jsx)
+
+    - Navigation Bar (Navbar.jsx)
+
+    - Fleet Inventory Dashboard (Vehicles.jsx)
+
+    - Add / Edit / Delete Vehicle
+
+    - Work Orders & Maintenance Hub (WorkOrders.jsx)
+
+    - Add / Edit / Delete Work Order
+
+    - Multi-Currency Conversion (Frankfurter FX API)
+
+    - Staff & Personnel Directory (Technicians.jsx)
+
+4. Backend Architecture
+
+5. Database Schemas (MongoDB Atlas)
+
+6. Cloud Deployment (Render + Vercel)
+
+7. References & AI Disclosure
+
+# 1. Overview
 FleetGuard IS provides small-to-medium logistics operators with a centralized platform to manage vehicle compliance, track mechanical defects, and monitor repair expenditures.
 
 -> Full-Stack JavaScript Architecture: Built using the complete MERN stack (MongoDB, Express,React, Node.js).
@@ -20,6 +53,43 @@ Backend         Node.js, Express.js
 Database        MongoDB Atlas 
 External API    Frankfurter API 
 Authentication  JWT (jsonwebtoken) & bcryptjs
+
+# 3. Frontend Views & Features
+
+# 3.1 Login View — Login.jsx
+Allows registered personnel to authenticate and receive an encrypted JWT session.
+
+Workflow:
+User enters registered email address and password.
+
+Frontend dispatches a POST request to /api/auth/login.
+
+Backend compares submitted credentials with the hashed password using bcrypt.compare.
+
+On success:
+
+Returns a signed JWT token and sanitized user profile payload.
+
+AuthContext stores credentials in localStorage.
+
+The user is automatically redirected to the Fleet Inventory Dashboard (/vehicles).
+
+Error Handling:
+Visual alert banners for incorrect password or non-existent email accounts.
+
+Network and server-down feedback messaging.
+
+# 3.2 Create Account View — Register.jsx
+Allows new personnel to register with designated operational privileges.
+
+Fields:
+Full Name
+
+Work Email Address
+
+Password
+
+Role Selection (Manager or Technician)
 
 # 3. Local Setup Instructions
 
