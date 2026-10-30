@@ -26,13 +26,17 @@ A lightweight, role-based MERN stack web application built for fleet management,
 
     - Staff & Personnel Directory (Technicians.jsx)
 
-4. Backend Architecture
+4. Local Setup Instructions 
 
-5. Database Schemas (MongoDB Atlas)
+5. Directory Layout
 
-6. Cloud Deployment (Render + Vercel)
+6. Backend Architecture
 
-7. References & AI Disclosure
+7. Database Schemas (MongoDB Atlas)
+
+8. Cloud Deployment (Render + Vercel)
+
+9. References & AI Disclosure
 
 # 1. Overview
 FleetGuard IS provides small-to-medium logistics operators with a centralized platform to manage vehicle compliance, track mechanical defects, and monitor repair expenditures.
@@ -123,7 +127,7 @@ The operational workshop board where repair tickets are logged, tracked, and cos
 # 3.7 Add / Edit / Delete Work Order
 Enables comprehensive ticket tracking and financial auditing.
 
-# 3. Local Setup Instructions
+# 4. Local Setup Instructions
 
 - Prerequisites
 Node.js (v18+ or v24+)
@@ -143,7 +147,7 @@ npm run dev
 Application will be accessible at http://localhost:5173.
 
 
-# 4. Directory Layout
+# 5. Directory Layout
 
 webdevproject/
 ├── client/
@@ -189,3 +193,25 @@ webdevproject/
     │   └── server.js               # Express application entry point
     ├── .env
     └── package.json
+
+
+# 6. Backend Architecture
+
+The backend is built as a RESTful Express.js application designed for stateless scalability and secure data access.
+
+Core Modules:
+- server.js: Express entry point configuring CORS, JSON body parsing, and routing trees.   
+- config/db.js: MongoDB Atlas cloud connection initialization via Mongoose.   
+- middleware/auth.js: Validates incoming Bearer JWT tokens and checks administrative role authorization.   
+- controllers/authController.js: Handles registration,  password hashing, login token generation, directory retrieval, and user account deletion. 
+- controllers/vehicleController.js: Manages full CRUD operations for fleet vehicle assets.   
+- controllers/workOrderController.js: Coordinates repair logs, triggers FX conversions, and synchronizes vehicle status.   
+- services/currencyService.js: Consumes the external Frankfurter FX API.   
+
+# 7. Database Schemas (MongoDB Atlas)
+
+User Schema (User.js)
+Vehicle Schema (Vehicle.js)
+Work Order Schema (WorkOrder.js)
+
+# 8. Cloud Deployment (Render + Vercel)
