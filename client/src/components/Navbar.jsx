@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Truck, LogOut, Wrench, ShieldCheck } from 'lucide-react';
+import { Truck, LogOut, Wrench, ShieldCheck, KeyRound } from 'lucide-react';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -49,6 +49,13 @@ const Navbar = () => {
       <span style={{ color: user.role === 'Manager' ? '#fbbf24' : '#a3e635' }}>
         {user.role}
        </span>
+       <NavLink 
+            to="/change-password" 
+            className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+            title="Account Settings">
+          <KeyRound size={15} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'text-bottom' }} />
+          Security
+        </NavLink>      
     </div>
 
     <button onClick={handleLogout} className="btn btn-ghost" style={{ color: '#ef4444' }} title="Sign Out">
