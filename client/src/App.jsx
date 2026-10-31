@@ -7,6 +7,7 @@ import Register from './pages/Register';
 import Vehicles from './pages/Vehicles';
 import WorkOrders from './pages/WorkOrders';
 import Technicians from './pages/Technicians';
+import ChangePassword from './pages/ChangePassword';
 
 
 const ProtectedRoute = ({ children }) => {
@@ -48,6 +49,14 @@ function App() {
               </ProtectedRoute>
                       }
           />
+          <Route
+            path="/change-password"
+            element={
+              <ProtectedRoute>
+              <ChangePassword />
+              </ProtectedRoute>
+                }
+            />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
