@@ -101,6 +101,7 @@ const Vehicles = () => {
 
   const totalFleet = vehicles.length;
   const roadworthyCount = vehicles.filter((v) => v.status === 'Roadworthy').length;
+  const inShopCount = vehicles.filter((v) => v.status === 'Under Maintenance').length;
 
   return (
     <div className="container">
@@ -142,7 +143,12 @@ const Vehicles = () => {
           <p style={{ color: '#64748b', fontSize: '0.85rem', fontWeight: 500, margin: 0 }}>Roadworthy Assets</p>
           <h3 style={{ fontSize: '1.85rem', fontWeight: 700, margin: '0.35rem 0 0', color: '#16a34a' }}>{roadworthyCount}</h3>
         </div>
-</div>
+        <div className="card" style={{ padding: '1.25rem', borderLeft: '4px solid #ea580c' }}>
+          <p style={{ color: '#64748b', fontSize: '0.85rem', fontWeight: 500, margin: 0 }}>Under Maintenance</p>
+          <h3 style={{ fontSize: '1.85rem', fontWeight: 700, margin: '0.35rem 0 0', color: '#ea580c' }}>{inShopCount}</h3>
+        </div>
+      </div>
+
       {showForm && (
         <div className="card" style={{ borderLeft: `4px solid ${editingId ? '#10b981' : '#2563eb'}` }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
