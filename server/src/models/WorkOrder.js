@@ -14,7 +14,7 @@ const workOrderSchema = new mongoose.Schema(
       enum: ['Pending', 'In Progress', 'Completed'],
       default: 'Pending',
     },
-    cost: { type: Number, default: 0 },
+    cost: { type: Number, required: true, default: 0, min: [0, 'Cost cannot be negative'] },
     currency: { type: String, default: 'EUR', uppercase: true },
     costInEUR: { type: Number, default: 0 },
   },
