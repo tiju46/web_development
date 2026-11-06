@@ -100,6 +100,7 @@ const Vehicles = () => {
   };
 
   const totalFleet = vehicles.length;
+  const roadworthyCount = vehicles.filter((v) => v.status === 'Roadworthy').length;
 
   return (
     <div className="container">
@@ -136,6 +137,10 @@ const Vehicles = () => {
         <div className="card" style={{ padding: '1.25rem', borderLeft: '4px solid #2563eb' }}>
           <p style={{ color: '#64748b', fontSize: '0.85rem', fontWeight: 500, margin: 0 }}>Total Fleet Assets</p>
           <h3 style={{ fontSize: '1.85rem', fontWeight: 700, margin: '0.35rem 0 0', color: '#0f172a' }}>{totalFleet}</h3>
+        </div>
+        <div className="card" style={{ padding: '1.25rem', borderLeft: '4px solid #16a34a' }}>
+          <p style={{ color: '#64748b', fontSize: '0.85rem', fontWeight: 500, margin: 0 }}>Roadworthy Assets</p>
+          <h3 style={{ fontSize: '1.85rem', fontWeight: 700, margin: '0.35rem 0 0', color: '#16a34a' }}>{roadworthyCount}</h3>
         </div>
 </div>
       {showForm && (
