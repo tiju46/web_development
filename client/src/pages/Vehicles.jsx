@@ -8,7 +8,7 @@ const Vehicles = () => {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  
+
 
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -99,6 +99,8 @@ const Vehicles = () => {
     }
   };
 
+  const totalFleet = vehicles.length;
+
   return (
     <div className="container">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
@@ -123,8 +125,19 @@ const Vehicles = () => {
           <span>{error}</span>
         </div>
       )}
-
-      
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gap: '1rem',
+          marginBottom: '1.5rem',
+        }}
+      >
+        <div className="card" style={{ padding: '1.25rem', borderLeft: '4px solid #2563eb' }}>
+          <p style={{ color: '#64748b', fontSize: '0.85rem', fontWeight: 500, margin: 0 }}>Total Fleet Assets</p>
+          <h3 style={{ fontSize: '1.85rem', fontWeight: 700, margin: '0.35rem 0 0', color: '#0f172a' }}>{totalFleet}</h3>
+        </div>
+</div>
       {showForm && (
         <div className="card" style={{ borderLeft: `4px solid ${editingId ? '#10b981' : '#2563eb'}` }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
@@ -230,7 +243,7 @@ const Vehicles = () => {
           <div style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>
             <Truck size={40} style={{ opacity: 0.3, marginBottom: '0.5rem' }} />
             <p>No vehicles registered in the fleet yet.</p>
-          </div>
+          </div>    
         ) : (
           <table>
             <thead>
