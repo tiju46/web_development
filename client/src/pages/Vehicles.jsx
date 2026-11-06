@@ -82,7 +82,7 @@ const Vehicles = () => {
       await API.delete(`/vehicles/${id}`);
       fetchVehicles();
     } catch (err) {
-      setError(err.response?.data?.error || 'Failed to delete vehicle');
+      setError(err.response?.data?.error || 'Delete failed');
     }
   };
 

@@ -11,7 +11,7 @@ const convertToEUR = async (amount, fromCurrency) => {
 
   try {
     const response = await axios.get(
-      `https://api.frankfurter.dev/v1/latest?amount=${numericAmount}&from=${currency}&to=EUR`
+      `https://api.frankfurter.dev/v1/latest?amount=${numericAmount}&from=${currency}&to=EUR`,{ timeout: 5000 }
     );
     return response.data?.rates?.EUR || numericAmount;
   } catch (error) {
