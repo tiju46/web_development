@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import API from '../api/axios';
 import { useAuth } from '../context/AuthContext';
-import { Truck, Plus, Trash2, Edit2, AlertCircle, RefreshCw, X, Check } from 'lucide-react';
+import { Truck, Plus, Trash2, Edit2, AlertCircle, RefreshCw, X, Check, Search } from 'lucide-react';
 
 const Vehicles = () => {
   const { user } = useAuth();
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
-
+  const [searchTerm, setSearchTerm] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
-
   const initialForm = {
     regNumber: '',
     make: '',
@@ -103,7 +101,15 @@ const Vehicles = () => {
   const roadworthyCount = vehicles.filter((v) => v.status === 'Roadworthy').length;
   const inShopCount = vehicles.filter((v) => v.status === 'Under Maintenance').length;
   const groundedCount = vehicles.filter((v) => v.status === 'Grounded').length;
-  
+  const filteredVehicles = vehicles.filter((v) => {
+    const term = searchTerm.toLowerCase();
+    return (
+      v.regNumber?.toLowerCase().includes(term) ||
+      v.make?.toLowerCase().includes(term) ||
+      v.model?.toLowerCase().includes(term)
+    );
+  });
+
   return (
     <div className="container">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
@@ -123,7 +129,7 @@ const Vehicles = () => {
       </div>
 
       {error && (
-        <div className="alert alert-danger">
+        <div className="alert alert-danger" style={{ marginBottom: '1.5rem' }}>
           <AlertCircle size={16} />
           <span>{error}</span>
         </div>
@@ -153,13 +159,15 @@ const Vehicles = () => {
           <h3 style={{ fontSize: '1.85rem', fontWeight: 700, margin: '0.35rem 0 0', color: '#dc2626' }}>{groundedCount}</h3>
         </div>
       </div>
-
       {showForm && (
-        <div className="card" style={{ borderLeft: `4px solid ${editingId ? '#10b981' : '#2563eb'}` }}>
+        <div className="card" style={{ borderLeft: `4px solid ${editingId ? '#10b981' : '#2563eb'}`, marginBottom: '1.5rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
             <h3 style={{ fontSize: '1.15rem' }}>{editingId ? 'Edit Vehicle Details' : 'Register New Vehicle'}</h3>
             <button
-              onClick={() => { setShowForm(false); setEditingId(null); }}
+              onClick={() => {
+                setShowForm(false);
+                setEditingId(null);
+              }}
               className="btn btn-ghost"
               style={{ padding: '0.25rem' }}
             >
@@ -235,7 +243,10 @@ const Vehicles = () => {
               <button
                 type="button"
                 className="btn btn-ghost"
-                onClick={() => { setShowForm(false); setEditingId(null); }}
+                onClick={() => {
+                  setShowForm(false);
+                  setEditingId(null);
+                }}
               >
                 Cancel
               </button>
@@ -248,6 +259,18 @@ const Vehicles = () => {
         </div>
       )}
 
+  
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', maxWidth: '380px', position: 'relative' }}>
+        <Search size={16} style={{ position: 'absolute', left: '12px', color: '#94a3b8' }} />
+        <input
+          type="text"
+          placeholder="Filter by reg, make, or model..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{ paddingLeft: '2.25rem', width: '100%' }}
+        />
+      </div>
+
       {/* Fleet Table */}
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         {loading ? (
@@ -259,7 +282,11 @@ const Vehicles = () => {
           <div style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>
             <Truck size={40} style={{ opacity: 0.3, marginBottom: '0.5rem' }} />
             <p>No vehicles registered in the fleet yet.</p>
-          </div>    
+          </div>
+        ) : filteredVehicles.length === 0 ? (
+          <div style={{ padding: '2.5rem', textAlign: 'center', color: '#64748b' }}>
+            <p>No vehicles match "{searchTerm}".</p>
+          </div>
         ) : (
           <table>
             <thead>
@@ -273,10 +300,12 @@ const Vehicles = () => {
               </tr>
             </thead>
             <tbody>
-              {vehicles.map((v) => (
+              {filteredVehicles.map((v) => (
                 <tr key={v._id}>
                   <td style={{ fontWeight: 600, color: '#0f172a' }}>{v.regNumber}</td>
-                  <td>{v.make} {v.model}</td>
+                  <td>
+                    {v.make} {v.model}
+                  </td>
                   <td>{v.year}</td>
                   <td>{Number(v.mileage).toLocaleString()} km</td>
                   <td>{getStatusBadge(v.status)}</td>
