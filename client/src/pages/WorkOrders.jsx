@@ -169,6 +169,15 @@ const WorkOrders = () => {
             €{totalExpenditureEUR.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </h3>
         </div>
+        <div className="card" style={{ padding: '1.25rem', borderLeft: '4px solid #ef4444' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <p style={{ color: '#64748b', fontSize: '0.85rem', fontWeight: 500, margin: 0 }}>Pending Approval</p>
+            <Clock size={18} style={{ color: '#ef4444' }} />
+          </div>
+          <h3 style={{ fontSize: '1.75rem', fontWeight: 700, margin: '0.35rem 0 0', color: '#ef4444' }}>
+            {pendingCount}
+          </h3>
+        </div>
         </div>
     
       {showForm && (
