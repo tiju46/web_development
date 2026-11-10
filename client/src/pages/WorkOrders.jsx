@@ -118,6 +118,14 @@ const WorkOrders = () => {
     }
   };
 
+  const totalExpenditureEUR = workOrders.reduce(
+    (sum, order) => sum + (Number(order.costInEUR) || Number(order.cost) || 0),
+    0
+  );
+  const pendingCount = workOrders.filter((o) => o.status === 'Pending').length;
+  const inProgressCount = workOrders.filter((o) => o.status === 'In Progress').length;
+  const completedCount = workOrders.filter((o) => o.status === 'Completed').length;
+
   return (
     <div className="container">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
@@ -143,6 +151,25 @@ const WorkOrders = () => {
         </div>
       )}
 
+      {/* Work Order Dashboard Cards */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))',
+          gap: '1rem',
+          marginBottom: '1.5rem',
+        }}
+      >
+        <div className="card" style={{ padding: '1.25rem', borderLeft: '4px solid #0284c7' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <p style={{ color: '#64748b', fontSize: '0.85rem', fontWeight: 500, margin: 0 }}>Total Normalized Spend</p>
+            <Euro size={18} style={{ color: '#0284c7' }} />
+          </div>
+          <h3 style={{ fontSize: '1.75rem', fontWeight: 700, margin: '0.35rem 0 0', color: '#0f172a' }}>
+            €{totalExpenditureEUR.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </h3>
+        </div>
+        </div>
     
       {showForm && (
         <div className="card" style={{ borderLeft: `4px solid ${editingId ? '#10b981' : '#2563eb'}` }}>
