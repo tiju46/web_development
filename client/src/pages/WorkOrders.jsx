@@ -178,7 +178,26 @@ const WorkOrders = () => {
             {pendingCount}
           </h3>
         </div>
+        <div className="card" style={{ padding: '1.25rem', borderLeft: '4px solid #f97316' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <p style={{ color: '#64748b', fontSize: '0.85rem', fontWeight: 500, margin: 0 }}>In Progress</p>
+            <Activity size={18} style={{ color: '#f97316' }} />
+          </div>
+          <h3 style={{ fontSize: '1.75rem', fontWeight: 700, margin: '0.35rem 0 0', color: '#f97316' }}>
+            {inProgressCount}
+          </h3>
         </div>
+
+        <div className="card" style={{ padding: '1.25rem', borderLeft: '4px solid #10b981' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <p style={{ color: '#64748b', fontSize: '0.85rem', fontWeight: 500, margin: 0 }}>Completed Repairs</p>
+            <CheckCircle size={18} style={{ color: '#10b981' }} />
+          </div>
+          <h3 style={{ fontSize: '1.75rem', fontWeight: 700, margin: '0.35rem 0 0', color: '#10b981' }}>
+            {completedCount}
+          </h3>
+        </div>
+      </div>
     
       {showForm && (
         <div className="card" style={{ borderLeft: `4px solid ${editingId ? '#10b981' : '#2563eb'}` }}>
