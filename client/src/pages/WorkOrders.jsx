@@ -364,7 +364,16 @@ const WorkOrders = () => {
           marginBottom: '1rem',
         }}
       >
-      
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', maxWidth: '360px', position: 'relative' }}>
+          <Search size={16} style={{ position: 'absolute', left: '12px', color: '#94a3b8' }} />
+          <input
+            type="text"
+            placeholder="Search tickets, vehicle reg, parts..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{ paddingLeft: '2.25rem', width: '100%' }}
+          />
+        </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <span style={{ fontSize: '0.85rem', color: '#64748b' }}>Filter by Status:</span>
