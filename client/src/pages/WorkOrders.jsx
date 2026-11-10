@@ -157,6 +157,7 @@ const WorkOrders = () => {
 
   return (
     <div className="container">
+      {/* Page Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <div>
           <h1 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#0f172a' }}>Maintenance & Work Orders</h1>
@@ -180,6 +181,7 @@ const WorkOrders = () => {
         </div>
       )}
 
+      {/* Maintenance Dashboard Cards */}
       <div
         style={{
           display: 'grid',
@@ -227,6 +229,7 @@ const WorkOrders = () => {
         </div>
       </div>
 
+      {/* Ticket Create / Edit Form Card */}
       {showForm && (
         <div className="card" style={{ borderLeft: `4px solid ${editingId ? '#10b981' : '#2563eb'}`, marginBottom: '1.5rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
@@ -350,6 +353,7 @@ const WorkOrders = () => {
         </div>
       )}
 
+      {/* Filter and Search Bar Controls */}
       <div
         style={{
           display: 'flex',
@@ -360,7 +364,22 @@ const WorkOrders = () => {
           marginBottom: '1rem',
         }}
       >
-        
+      
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <span style={{ fontSize: '0.85rem', color: '#64748b' }}>Filter by Status:</span>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            style={{ width: 'auto', padding: '0.45rem 0.8rem', fontSize: '0.85rem' }}
+          >
+            <option value="ALL">All Statuses ({workOrders.length})</option>
+            <option value="Pending">Pending ({pendingCount})</option>
+            <option value="In Progress">In Progress ({inProgressCount})</option>
+            <option value="Completed">Completed ({completedCount})</option>
+          </select>
+        </div>
+      </div>
 
       {/* Work Orders Table */}
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
