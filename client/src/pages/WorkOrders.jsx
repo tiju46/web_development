@@ -1,7 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import API from '../api/axios';
 import { useAuth } from '../context/AuthContext';
-import { Wrench, Plus, CheckCircle, AlertTriangle, ArrowRight, Edit2, Trash2, X, Check } from 'lucide-react';
+import { 
+  Wrench, 
+  Plus, 
+  CheckCircle, 
+  AlertTriangle, 
+  ArrowRight, 
+  Edit2, 
+  Trash2, 
+  X, 
+  Check, 
+  Search, 
+  Euro, 
+  Clock, 
+  Activity 
+} from 'lucide-react';
 
 const WorkOrders = () => {
   const { user } = useAuth();
@@ -9,7 +23,8 @@ const WorkOrders = () => {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('ALL');
 
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -126,6 +141,20 @@ const WorkOrders = () => {
   const inProgressCount = workOrders.filter((o) => o.status === 'In Progress').length;
   const completedCount = workOrders.filter((o) => o.status === 'Completed').length;
 
+  // Filtered Results
+  const filteredWorkOrders = workOrders.filter((order) => {
+    const term = searchTerm.toLowerCase();
+    const matchesSearch =
+      order.title?.toLowerCase().includes(term) ||
+      order.description?.toLowerCase().includes(term) ||
+      order.vehicle?.regNumber?.toLowerCase().includes(term) ||
+      order.vehicle?.make?.toLowerCase().includes(term) ||
+      order.vehicle?.model?.toLowerCase().includes(term);
+
+    const matchesStatus = statusFilter === 'ALL' || order.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
   return (
     <div className="container">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
@@ -145,13 +174,12 @@ const WorkOrders = () => {
       </div>
 
       {error && (
-        <div className="alert alert-danger">
+        <div className="alert alert-danger" style={{ marginBottom: '1.5rem' }}>
           <AlertTriangle size={16} />
           <span>{error}</span>
         </div>
       )}
 
-      {/* Work Order Dashboard Cards */}
       <div
         style={{
           display: 'grid',
@@ -198,13 +226,16 @@ const WorkOrders = () => {
           </h3>
         </div>
       </div>
-    
+
       {showForm && (
-        <div className="card" style={{ borderLeft: `4px solid ${editingId ? '#10b981' : '#2563eb'}` }}>
+        <div className="card" style={{ borderLeft: `4px solid ${editingId ? '#10b981' : '#2563eb'}`, marginBottom: '1.5rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
             <h3 style={{ fontSize: '1.15rem' }}>{editingId ? 'Edit Work Order' : 'Create Maintenance Ticket'}</h3>
             <button
-              onClick={() => { setShowForm(false); setEditingId(null); }}
+              onClick={() => {
+                setShowForm(false);
+                setEditingId(null);
+              }}
               className="btn btn-ghost"
               style={{ padding: '0.25rem' }}
             >
@@ -303,7 +334,10 @@ const WorkOrders = () => {
               <button
                 type="button"
                 className="btn btn-ghost"
-                onClick={() => { setShowForm(false); setEditingId(null); }}
+                onClick={() => {
+                  setShowForm(false);
+                  setEditingId(null);
+                }}
               >
                 Cancel
               </button>
@@ -316,6 +350,19 @@ const WorkOrders = () => {
         </div>
       )}
 
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '0.75rem',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '1rem',
+        }}
+      >
+        
+
+      {/* Work Orders Table */}
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         {loading ? (
           <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
@@ -325,6 +372,10 @@ const WorkOrders = () => {
           <div style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>
             <Wrench size={40} style={{ opacity: 0.3, marginBottom: '0.5rem' }} />
             <p>No active maintenance tickets logged.</p>
+          </div>
+        ) : filteredWorkOrders.length === 0 ? (
+          <div style={{ padding: '2.5rem', textAlign: 'center', color: '#64748b' }}>
+            <p>No maintenance tickets match the selected filters.</p>
           </div>
         ) : (
           <table>
@@ -339,7 +390,7 @@ const WorkOrders = () => {
               </tr>
             </thead>
             <tbody>
-              {workOrders.map((order) => (
+              {filteredWorkOrders.map((order) => (
                 <tr key={order._id}>
                   <td style={{ fontWeight: 600 }}>
                     {order.vehicle?.regNumber || 'Unknown Vehicle'}
@@ -385,7 +436,6 @@ const WorkOrders = () => {
                         <Edit2 size={15} />
                       </button>
 
-                      {/* Delete Button (Manager only) */}
                       {user?.role === 'Manager' && (
                         <button
                           onClick={() => handleDeleteOrder(order._id)}
