@@ -44,12 +44,13 @@ const Technicians = () => {
 
     try {
       const res = await API.delete(`/auth/users/${id}`);
-      setActionMessage(res.data.message || 'User deleted successfully');
+      setActionMessage(res.data?.message || 'User deleted successfully');
       fetchUsers();
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to delete user');
     }
   };
+  const totalStaff = usersList.length;
 
   return (
     <div className="container">
@@ -60,6 +61,7 @@ const Technicians = () => {
         </p>
       </div>
 
+      {/* Alerts */}
       {error && (
         <div className="alert alert-danger">
           <AlertCircle size={16} />
@@ -73,6 +75,25 @@ const Technicians = () => {
         </div>
       )}
 
+      {/* Staff Dashboard */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gap: '1rem',
+          marginBottom: '1.5rem',
+        }}
+      >
+        <div className="card" style={{ padding: '1.25rem', borderLeft: '4px solid #2563eb' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <p style={{ color: '#64748b', fontSize: '0.85rem', fontWeight: 500, margin: 0 }}>Total Registered Staff</p>
+            <Users size={18} style={{ color: '#2563eb' }} />
+          </div>
+          <h3 style={{ fontSize: '1.85rem', fontWeight: 700, margin: '0.35rem 0 0', color: '#0f172a' }}>
+            {totalStaff}
+          </h3>
+        </div>
+      </div>
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         {loading ? (
           <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
