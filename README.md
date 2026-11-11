@@ -262,3 +262,10 @@ https://stackoverflow.com/questions/9392978/group-rule-based-authorization-appro
 
 React Router Documentation
 https://reactrouter.com/start/framework/routing
+
+Mongoose Official Guides : Validation Rules & Custom Schema Types https://mongoosejs.com/docs/validation.html
+https://mongoosejs.com/docs/populate.html
+
+MDN Web Docs: Array.prototype.reduce() for Financial Sums — Used to aggregate total fleet expenditure across normalized EUR order amounts. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce
+
+Stack Overflow: "Filter array of objects by multiple fields in React" — Pattern for real-time matching across Registration Number, Make, and Model.
