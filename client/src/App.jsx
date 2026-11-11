@@ -8,56 +8,66 @@ import Vehicles from './pages/Vehicles';
 import WorkOrders from './pages/WorkOrders';
 import Technicians from './pages/Technicians';
 import ChangePassword from './pages/ChangePassword';
-
+import { useIdleTimer } from './hooks/useIdleTimer';
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
   return user ? children : <Navigate to="/login" replace />;
 };
 
+const AppLayout = () => {
+  useIdleTimer(0.25); // Set idle timeout to 15 seconds for testing purposes  
+  return (
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Navigate to="/vehicles" replace />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        <Route
+          path="/vehicles"
+          element={
+            <ProtectedRoute>
+              <Vehicles />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/work-orders"
+          element={
+            <ProtectedRoute>
+              <WorkOrders />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/technicians"
+          element={
+            <ProtectedRoute>
+              <Technicians />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/change-password"
+          element={
+            <ProtectedRoute>
+              <ChangePassword />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/vehicles" replace />} />
+      </Routes>
+    </>
+  );
+};
+
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Navigate to="/vehicles" replace />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          
-          <Route
-            path="/vehicles"
-            element={
-                <ProtectedRoute>
-                <Vehicles />
-                </ProtectedRoute>
-               }
-          />
-          <Route
-            path="/work-orders"
-            element={
-              <ProtectedRoute>
-              <WorkOrders />
-              </ProtectedRoute>
-                    }
-          />
-          <Route
-            path="/technicians"
-            element={
-              <ProtectedRoute>
-              <Technicians />
-              </ProtectedRoute>
-                      }
-          />
-          <Route
-            path="/change-password"
-            element={
-              <ProtectedRoute>
-              <ChangePassword />
-              </ProtectedRoute>
-                }
-            />
-        </Routes>
+        <AppLayout />
       </BrowserRouter>
     </AuthProvider>
   );
