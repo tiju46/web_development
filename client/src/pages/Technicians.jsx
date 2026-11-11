@@ -52,6 +52,7 @@ const Technicians = () => {
   };
   const totalStaff = usersList.length;
   const managerCount = usersList.filter((m) => m.role === 'Manager').length;
+  const technicianCount = usersList.filter((m) => m.role === 'Technician').length;
 
   return (
     <div className="container">
@@ -101,6 +102,15 @@ const Technicians = () => {
           </div>
           <h3 style={{ fontSize: '1.85rem', fontWeight: 700, margin: '0.35rem 0 0', color: '#f97316' }}>
             {managerCount}
+          </h3>
+        </div>
+        <div className="card" style={{ padding: '1.25rem', borderLeft: '4px solid #10b981' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <p style={{ color: '#64748b', fontSize: '0.85rem', fontWeight: 500, margin: 0 }}>Workshop Technicians</p>
+            <Wrench size={18} style={{ color: '#10b981' }} />
+          </div>
+          <h3 style={{ fontSize: '1.85rem', fontWeight: 700, margin: '0.35rem 0 0', color: '#10b981' }}>
+            {technicianCount}
           </h3>
         </div>
       </div>
