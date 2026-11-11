@@ -16,7 +16,7 @@ const ProtectedRoute = ({ children }) => {
 };
 
 const AppLayout = () => {
-  useIdleTimer(0.25); // Set idle timeout to 15 seconds for testing purposes  
+  useIdleTimer(15); // Set idle timeout to 15 minutes
   return (
     <>
       <Navbar />
