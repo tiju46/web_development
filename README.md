@@ -269,3 +269,4 @@ https://mongoosejs.com/docs/populate.html
 MDN Web Docs: Array.prototype.reduce() for Financial Sums — Used to aggregate total fleet expenditure across normalized EUR order amounts. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce
 
 Stack Overflow: "Filter array of objects by multiple fields in React" — Pattern for real-time matching across Registration Number, Make, and Model.
+https://stackoverflow.com/questions/73085505/how-to-filter-an-array-of-objects-based-on-multiple-properties-in-javascript-typ
