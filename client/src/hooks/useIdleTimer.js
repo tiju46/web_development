@@ -25,6 +25,24 @@ export const useIdleTimer = (timeoutInMinutes = 15) => {
     }
   };
 
+  const handleLogoutOnInactivity = () => {
+    if (logout) {
+      logout();
+    } else {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+    }
+    alert('Session expired due to inactivity. Please log in again.');
+    navigate('/login');
+  };
+
+  useEffect(() => {
+    const activityEvents = ['mousemove', 'keydown', 'mousedown', 'scroll', 'touchstart'];
+
+    const handleActivity = () => {
+      resetTimer();
+    };
+
     if (user) {
       // Start timer on initial mount
       resetTimer();
@@ -35,5 +53,13 @@ export const useIdleTimer = (timeoutInMinutes = 15) => {
       });
     }
 
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+      activityEvents.forEach((event) => {
+        window.removeEventListener(event, handleActivity);
+      });
+    };
   }, [user, timeoutMs]);
 };
