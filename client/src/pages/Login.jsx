@@ -19,7 +19,7 @@ const Login = () => {
     try {
       const res = await API.post('/auth/login', formData);
       login(res.data.user, res.data.token);
-      navigate('/vehicles');
+      navigate('/vehicles', { replace: true });
     } catch (err) {
       setError(err.response?.data?.error || 'Invalid email or password');
     } finally {
