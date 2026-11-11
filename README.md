@@ -216,10 +216,9 @@ Work Order Schema (WorkOrder.js)
 
 # 8. Cloud Deployment (Render + Vercel)
 
-# References & AI Disclosure
+# 9. References & AI Disclosure
 
 References & Technical Community Discussions
-MongoDB Atlas Port & DNS SRV Resolution Constraints on Campus Networks:
 
 Stack Overflow: "MongooseServerSelectionError: Could not connect to any servers in your MongoDB Atlas cluster" (Discussion on port 27017 drops and ISP DNS SRV lookup failures).
 https://stackoverflow.com/questions/75758172/unable-to-connect-atlas-mongodb-instance
@@ -243,4 +242,23 @@ https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
 
 External Exchange Rates API:
 
-Frankfurter Open Exchange Rates API Documentation: https://api.frankfurter.dev (European Central Bank reference rate service).
+Frankfurter Open Exchange Rates API Documentation: https://api.frankfurter.dev &
+https://frankfurter.dev/
+
+Authentication, Role-Based Access Control (RBAC) & Password Rotation
+Stack Overflow: "How to securely pass JWT tokens using Axios Authorization headers in React SPAs" — Referenced for setting up Axios request interceptors that read tokens from localStorage
+https://stackoverflow.com/questions/43051291/attach-authorization-header-for-all-axios-requests
+
+Salted Hashing & In-App Password Rotation (ChangePassword.jsx):
+
+Stack Overflow: "Verify old password before saving new password using bcrypt in MERN" — Implementation reference for bcrypt.compare() checks on existing hashes prior to generating new salt rounds.
+https://stackoverflow.com/questions/68514158/how-do-i-validate-old-password-while-updating-user-password
+
+OWASP Foundation: Password Storage Cheat Sheet — Reference for setting standard bcrypt cost factors to 10 rounds to resist brute-force cracking without blocking Node's single-threaded event loop.
+https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+
+Stack Overflow: "Role-based authorization middleware in Express.js" — Design pattern for creating modular middleware chains checking req.user.role === 'Manager'.
+https://stackoverflow.com/questions/9392978/group-rule-based-authorization-approach-in-node-js-and-express-js
+
+React Router Documentation
+https://reactrouter.com/start/framework/routing
