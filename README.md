@@ -215,3 +215,32 @@ Vehicle Schema (Vehicle.js)
 Work Order Schema (WorkOrder.js)
 
 # 8. Cloud Deployment (Render + Vercel)
+
+# References & AI Disclosure
+
+References & Technical Community Discussions
+MongoDB Atlas Port & DNS SRV Resolution Constraints on Campus Networks:
+
+Stack Overflow: "MongooseServerSelectionError: Could not connect to any servers in your MongoDB Atlas cluster" (Discussion on port 27017 drops and ISP DNS SRV lookup failures).
+https://stackoverflow.com/questions/75758172/unable-to-connect-atlas-mongodb-instance
+
+MongoDB Community Forums: "Cluster connection issues on university and corporate firewalls".
+https://www.mongodb.com/docs/atlas/troubleshoot-connection/
+https://www.mongodb.com/community/forums/t/not-able-to-login-and-connect-database-locally-while-using-wifi-router/273926/2
+
+Vite & React Single-Page App Deployment:
+
+Vercel Documentation & GitHub Discussions: "Vite + React Router 404 on refresh on Vercel deployment" (Implementing vercel.json rewrites).
+https://vercel.com/docs/git/vercel-for-github
+
+Token-Based Authentication & Session Management: 
+
+Stack Overflow: "How to implement an auto logout idle timer in React without third-party libraries".
+https://stackoverflow.com/questions/76001308/handle-user-inactivity-and-logout-in-react
+
+MDN Web Docs: Using DOM Event Listeners with window for user interaction monitoring.
+https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+
+External Exchange Rates API:
+
+Frankfurter Open Exchange Rates API Documentation: https://api.frankfurter.dev (European Central Bank reference rate service).
