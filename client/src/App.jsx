@@ -15,6 +15,11 @@ const ProtectedRoute = ({ children }) => {
   return user ? children : <Navigate to="/login" replace />;
 };
 
+const PublicOnlyRoute = ({ children }) => {
+  const { user } = useAuth();
+  return user ? <Navigate to="/vehicles" replace /> : children;
+};
+
 const AppLayout = () => {
   useIdleTimer(15); // Set idle timeout to 15 minutes
   return (
@@ -22,8 +27,24 @@ const AppLayout = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Navigate to="/vehicles" replace />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        
+        {/* Login and Register */}
+        <Route 
+          path="/login" 
+          element={
+            <PublicOnlyRoute>
+              <Login />
+            </PublicOnlyRoute>
+          } 
+        />
+        <Route 
+          path="/register" 
+          element={
+            <PublicOnlyRoute>
+              <Register />
+            </PublicOnlyRoute>
+          } 
+        />
 
         <Route
           path="/vehicles"
