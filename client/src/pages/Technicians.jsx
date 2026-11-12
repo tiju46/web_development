@@ -10,6 +10,7 @@ const Technicians = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [actionMessage, setActionMessage] = useState('');
+  const [roleFilter, setRoleFilter] = useState('ALL');
 
   if (user?.role !== 'Manager') {
     return <Navigate to="/vehicles" replace />;
@@ -53,6 +54,10 @@ const Technicians = () => {
   const totalStaff = usersList.length;
   const managerCount = usersList.filter((m) => m.role === 'Manager').length;
   const technicianCount = usersList.filter((m) => m.role === 'Technician').length;
+  const filteredUsers = usersList.filter((member) => {
+    const matchesRole = roleFilter === 'ALL' || member.role === roleFilter;
+    return matchesSearch && matchesRole;
+  });
 
   return (
     <div className="container">
@@ -114,6 +119,30 @@ const Technicians = () => {
           </h3>
         </div>
       </div>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '0.75rem',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '1rem',
+        }}
+      >
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <span style={{ fontSize: '0.85rem', color: '#64748b' }}>Filter by Role:</span>
+          <select
+            value={roleFilter}
+            onChange={(e) => setRoleFilter(e.target.value)}
+            style={{ width: 'auto', padding: '0.45rem 0.8rem', fontSize: '0.85rem' }}
+          >
+            <option value="ALL">All Roles ({usersList.length})</option>
+            <option value="Technician">Technicians ({technicianCount})</option>
+            <option value="Manager">Managers ({managerCount})</option>
+          </select>
+        </div>
+      </div>
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         {loading ? (
           <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
@@ -136,7 +165,7 @@ const Technicians = () => {
               </tr>
             </thead>
             <tbody>
-              {usersList.map((member) => (
+              {filteredUsers.map((member) => (
                 <tr key={member._id}>
                   <td style={{ fontWeight: 600, color: '#0f172a' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
