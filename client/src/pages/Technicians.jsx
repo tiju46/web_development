@@ -141,7 +141,7 @@ const Technicians = () => {
           <Search size={16} style={{ position: 'absolute', left: '12px', color: '#94a3b8' }} />
           <input
             type="text"
-            placeholder="Search by name, email, or ID..."
+            placeholder="Search by name, email, or UserID..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{ paddingLeft: '2.25rem', width: '100%' }}
