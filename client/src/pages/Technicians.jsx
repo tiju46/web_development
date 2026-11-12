@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import API from '../api/axios';
 import { useAuth } from '../context/AuthContext';
-import { Users, Shield, Wrench, Mail, AlertCircle, Trash2 } from 'lucide-react';
+import { Users, Shield, Wrench, Mail, AlertCircle, Trash2, Search, UserCheck } from 'lucide-react';
 import { Navigate } from 'react-router-dom';
 
 const Technicians = () => {
@@ -10,6 +10,7 @@ const Technicians = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [actionMessage, setActionMessage] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState('ALL');
 
   if (user?.role !== 'Manager') {
@@ -55,6 +56,12 @@ const Technicians = () => {
   const managerCount = usersList.filter((m) => m.role === 'Manager').length;
   const technicianCount = usersList.filter((m) => m.role === 'Technician').length;
   const filteredUsers = usersList.filter((member) => {
+    const term = searchTerm.toLowerCase();
+    const matchesSearch =
+      member.name?.toLowerCase().includes(term) ||
+      member.email?.toLowerCase().includes(term) ||
+      member._id?.toLowerCase().includes(term);
+
     const matchesRole = roleFilter === 'ALL' || member.role === roleFilter;
     return matchesSearch && matchesRole;
   });
@@ -129,6 +136,16 @@ const Technicians = () => {
           marginBottom: '1rem',
         }}
       >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', maxWidth: '360px', position: 'relative' }}>
+          <Search size={16} style={{ position: 'absolute', left: '12px', color: '#94a3b8' }} />
+          <input
+            type="text"
+            placeholder="Search by name, email, or ID..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{ paddingLeft: '2.25rem', width: '100%' }}
+          />
+        </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <span style={{ fontSize: '0.85rem', color: '#64748b' }}>Filter by Role:</span>
@@ -152,6 +169,10 @@ const Technicians = () => {
           <div style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>
             <Users size={40} style={{ opacity: 0.3, marginBottom: '0.5rem' }} />
             <p>No registered accounts found.</p>
+          </div>
+        ) : filteredUsers.length === 0 ? (
+          <div style={{ padding: '2.5rem', textAlign: 'center', color: '#64748b' }}>
+            <p>No team members match "{searchTerm}".</p>
           </div>
         ) : (
           <table>
