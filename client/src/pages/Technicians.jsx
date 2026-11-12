@@ -77,14 +77,15 @@ const Technicians = () => {
 
       {/* Alerts */}
       {error && (
-        <div className="alert alert-danger">
+        <div className="alert alert-danger" style={{ marginBottom: '1.5rem' }}>
           <AlertCircle size={16} />
           <span>{error}</span>
         </div>
       )}
 
       {actionMessage && (
-        <div className="alert alert-success">
+        <div className="alert alert-success" style={{ marginBottom: '1.5rem' }}>
+          <UserCheck size={16} />
           <span>{actionMessage}</span>
         </div>
       )}
