@@ -34,7 +34,7 @@ const Navbar = () => {
     </NavLink>
     {user.role === 'Manager' && (
       <NavLink to="/technicians" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
-        Technicians
+        Staff
       </NavLink>
     )}
 
