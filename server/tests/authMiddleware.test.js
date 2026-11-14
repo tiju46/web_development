@@ -29,4 +29,19 @@ describe('Authentication & RBAC Middleware', () => {
     expect(mockReq.user.role).toBe('Manager');
     expect(nextFunction).toHaveBeenCalledTimes(1);
   });
+
+  test('requireManager rejects Technician role with 403 Forbidden', () => {
+    mockReq.user = { id: '456', role: 'Technician' };
+
+    requireManager(mockReq, mockRes, nextFunction);
+    expect(mockRes.status).toHaveBeenCalledWith(403);
+    expect(nextFunction).not.toHaveBeenCalled();
+  });
+
+  test('requireManager allows Manager role to proceed', () => {
+    mockReq.user = { id: '123', role: 'Manager' };
+
+    requireManager(mockReq, mockRes, nextFunction);
+    expect(nextFunction).toHaveBeenCalledTimes(1);
+  });
 });
