@@ -270,3 +270,8 @@ MDN Web Docs: Array.prototype.reduce() for Financial Sums — Used to aggregate 
 
 Stack Overflow: "Filter array of objects by multiple fields in React" — Pattern for real-time matching across Registration Number, Make, and Model.
 https://stackoverflow.com/questions/73085505/how-to-filter-an-array-of-objects-based-on-multiple-properties-in-javascript-typ
+
+Backend API & Service Unit Testing (`Jest`):
+Jest Official Documentation: [Mocking Modules & Asynchronous Functions (`jest.mock`)](https://jestjs.io/docs/mock-functions#mocking-modules) — Referenced for isolating `currencyService.js` from external HTTP network calls to the Frankfurter API during unit test runs.
+
+Stack Overflow: ["Jest CLI flags `--runInBand` and `--forceExit` for Node.js test suites"](https://stackoverflow.com/questions/50171932/run-jest-test-suites-in-series) — Ensuring deterministic sequential test execution and clean process exit in npm test scripts.
