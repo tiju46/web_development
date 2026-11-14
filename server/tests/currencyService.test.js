@@ -24,4 +24,10 @@ describe('Currency Normalization Service (Frankfurter FX)', () => {
     expect(axios.get).toHaveBeenCalledTimes(1);
   });
 
+  test('falls back gracefully to original amount if external API fails', async () => {
+    axios.get.mockRejectedValueOnce(new Error('Network Timeout'));
+
+    const result = await convertToEUR(200, 'GBP');
+    expect(result).toBe(200);
+  });
 });
