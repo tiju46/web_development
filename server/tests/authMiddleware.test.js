@@ -1,5 +1,13 @@
 const jwt = require('jsonwebtoken');
-const { protect, requireManager } = require('../src/middleware/auth');
+const authModule = require('../src/middleware/auth');
+
+const { requireManager } = authModule;
+const authMiddleware =
+  typeof authModule === 'function'
+    ? authModule
+    : Object.entries(authModule).find(
+        ([key, val]) => key !== 'requireManager' && typeof val === 'function'
+      )?.[1];
 
 process.env.JWT_SECRET = 'test_secret_key';
 
@@ -15,17 +23,17 @@ describe('Authentication & RBAC Middleware', () => {
     nextFunction = jest.fn();
   });
 
-  test('protect blocks requests missing Authorization Bearer header', () => {
-    protect(mockReq, mockRes, nextFunction);
+  test('auth middleware blocks requests missing Authorization Bearer header', async () => {
+    await authMiddleware(mockReq, mockRes, nextFunction);
     expect(mockRes.status).toHaveBeenCalledWith(401);
     expect(nextFunction).not.toHaveBeenCalled();
   });
 
-  test('protect attaches decoded user payload and calls next() for valid JWT', () => {
+  test('auth middleware attaches decoded user payload and calls next() for valid JWT', async () => {
     const token = jwt.sign({ id: '123', role: 'Manager' }, process.env.JWT_SECRET);
     mockReq.headers.authorization = `Bearer ${token}`;
 
-    protect(mockReq, mockRes, nextFunction);
+    await authMiddleware(mockReq, mockRes, nextFunction);
     expect(mockReq.user.role).toBe('Manager');
     expect(nextFunction).toHaveBeenCalledTimes(1);
   });
