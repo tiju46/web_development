@@ -26,6 +26,8 @@ A lightweight, role-based MERN stack web application built for fleet management,
 
     - Staff & Personnel Directory (Technicians.jsx)
 
+    - Self-Service Credential Rotation — ChangePassword.jsx
+
 4. Local Setup Instructions 
 
 5. Directory Layout
@@ -36,7 +38,9 @@ A lightweight, role-based MERN stack web application built for fleet management,
 
 8. Cloud Deployment (Render + Vercel)
 
-9. References & AI Disclosure
+9. Automated Testing Suite (Jest & Vitest)
+
+10. References & AI Disclosure
 
 # 1. Overview
 FleetGuard IS provides small-to-medium logistics operators with a centralized platform to manage vehicle compliance, track mechanical defects, and monitor repair expenditures.
@@ -44,7 +48,7 @@ FleetGuard IS provides small-to-medium logistics operators with a centralized pl
 -> Full-Stack JavaScript Architecture: Built using the complete MERN stack (MongoDB, Express,React, Node.js).
 -> Cloud Database Integration: Connected to a cloud-hosted MongoDB Atlas M0 cluster via Mongoose.
 -> Role-Based Access Control (RBAC): Distinct permissions enforced across Manager and Technician roles.
--> Complete CRUD Capabilities: Create, Read, Update, and Delete operations implemented across Vehicles and Work Orders.
+-> Complete CRUD Capabilities: Create, Read, Update, and Delete operations implemented across Vehicles, Work Orders and Staff.
 -> Third-Party External API Consumption: Automated currency normalization to EUR using the Frankfurter FX API.
 -> RESTful Security: Stateless session tokens via JSON Web Tokens (JWT) and salted password hashing with bcryptjs.
 
@@ -126,6 +130,17 @@ The operational workshop board where repair tickets are logged, tracked, and cos
     Automatic vehicle status synchronization.   
 # 3.7 Add / Edit / Delete Work Order
 Enables comprehensive ticket tracking and financial auditing.
+
+# 3.8 Staff & Personnel Directory — Technicians.jsx
+Manager-exclusive governance dashboard for overseeing organization personnel.
+
+**Features**:
+- **Team KPI Cards**: Live counters for **Total Registered Staff**, **Workshop Technicians**, and **Fleet Managers**.
+- **Search & Role Filter**: Instant lookup by name, email, or user ID alongside role filtering (`All`, `Technician`, `Manager`).
+- Account deletion controls with built-in safeguards preventing administrators from deleting their own active session profile.
+
+# 3.9 Self-Service Credential Rotation — ChangePassword.jsx
+Enables logged-in users to securely update their password by verifying their current password against `bcrypt.compare` before hashing and saving the new credential.
 
 # 4. Local Setup Instructions
 
@@ -216,7 +231,20 @@ Work Order Schema (WorkOrder.js)
 
 # 8. Cloud Deployment (Render + Vercel)
 
-# 9. References & AI Disclosure
+
+# 9. Automated Testing Suite (Jest & Vitest)
+Automated unit tests validate business logic, schema rules, RBAC middleware, and frontend session/UI guards in isolation without requiring live database sockets or external API uptime:
+
+Run Backend Tests (server/):
+cd server
+npm test
+
+Run Frontend Tests (client/):
+cd client
+npm test
+
+
+# 10. References & AI Disclosure
 
 References & Technical Community Discussions
 
@@ -275,3 +303,16 @@ Backend API & Service Unit Testing (`Jest`):
 Jest Official Documentation: [Mocking Modules & Asynchronous Functions (`jest.mock`)](https://jestjs.io/docs/mock-functions#mocking-modules) — Referenced for isolating `currencyService.js` from external HTTP network calls to the Frankfurter API during unit test runs.
 
 Stack Overflow: ["Jest CLI flags `--runInBand` and `--forceExit` for Node.js test suites"](https://stackoverflow.com/questions/50171932/run-jest-test-suites-in-series) — Ensuring deterministic sequential test execution and clean process exit in npm test scripts.
+
+Vitest Official Documentation: Fake Timers (vi.useFakeTimers) — Fast-forwarding inactivity countdown timers in useIdleTimer.test.jsx
+
+### Academic Declaration on Generative AI Assistance
+
+In accordance with institutional academic integrity guidelines on transparent technology usage, Generative AI (Google Gemini) was consulted as a technical learning and development assistant throughout the creation of FleetGuard IS. Specifically, AI assistance was used for the following purposes:
+
+- **Conceptual Clarification & Troubleshooting:** Asking technical doubts during development and diagnosing runtime, routing, and network configuration issues.
+- **Framework Setup & Configuration:** Guidance on structuring the decoupled MERN workspace, configuring Vite and Express build environments, and managing deployment settings for Vercel and Render.
+- **External API Integration:** Understanding request handling, timeout protection, and fallback patterns when consuming the Frankfurter Foreign Exchange API.
+- **API Routing & Middleware Architecture:** Clarifying RESTful endpoint conventions, Express router modularization, and JWT role-based access control patterns.
+- **UI & CSS Design:** Refining layout responsiveness, dashboard card grids, status badges, and clean styling across frontend views.
+- **Documentation Drafting:** Organizing and formatting technical specifications, schemas, and setup instructions for this `README.md` file.
