@@ -19,4 +19,31 @@ describe('Database Schema Validation Rules', () => {
     expect(vehicle.status).toBe('Roadworthy');
   });
 
+  test('WorkOrder model rejects negative maintenance costs', () => {
+    const order = new WorkOrder({
+      vehicle: new mongoose.Types.ObjectId(),
+      title: 'Oil Filter Replacement',
+      description: 'Routine scheduled service',
+      cost: -50,
+      currency: 'EUR',
+      costInEUR: -50,
+    });
+
+    const validationError = order.validateSync();
+    expect(validationError).toBeDefined();
+    expect(validationError.errors.cost).toBeDefined();
+  });
+
+  test('User model rejects unauthorized role values and normalizes email to lowercase', () => {
+    const invalidUser = new User({
+      name: 'Test Staff',
+      email: '  TECH@FLEETGUARD.IE ',
+      password: 'hashedpassword123',
+      role: 'SuperAdmin', // Not in ['Manager', 'Technician']
+    });
+
+    expect(invalidUser.email).toBe('tech@fleetguard.ie');
+    const validationError = invalidUser.validateSync();
+    expect(validationError.errors.role).toBeDefined();
+  });
 });
