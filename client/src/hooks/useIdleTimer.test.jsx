@@ -40,5 +40,25 @@ describe('useIdleTimer Security Hook', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/login');
   });
 
-  
+  test('resets countdown when user interacts with the page', () => {
+    const mockLogout = vi.fn();
+    vi.spyOn(AuthContextModule, 'useAuth').mockReturnValue({
+      user: { name: 'Tiju', role: 'Manager' },
+      logout: mockLogout,
+    });
+
+    renderHook(() => useIdleTimer(1), { wrapper: MemoryRouter });
+
+    // Advance 45 seconds, then simulate mouse movement
+    vi.advanceTimersByTime(45 * 1000);
+    window.dispatchEvent(new Event('mousemove'));
+
+    // Advance another 30 seconds (75s total, but only 30s since activity)
+    vi.advanceTimersByTime(30 * 1000);
+    expect(mockLogout).not.toHaveBeenCalled();
+
+    // Advance remaining 30 seconds to trigger timeout
+    vi.advanceTimersByTime(30 * 1000);
+    expect(mockLogout).toHaveBeenCalledTimes(1);
+  });
 });
