@@ -1,6 +1,8 @@
 # FleetGuard IS – Fleet Maintenance & Roadworthiness Tracker
 A lightweight, role-based MERN stack web application built for fleet management, maintenance scheduling, and vehicle roadworthiness tracking,schedule mechanical repairs, manage technician staff directories, and normalize cross-border maintenance expenditures in real time
 
+**Live Deployment Links** :- https://fleetguard-is.vercel.app
+
 # Table of Contents
 1. Overview
 
@@ -231,6 +233,11 @@ Work Order Schema (WorkOrder.js)
 
 # 8. Cloud Deployment (Render + Vercel)
 
+FleetGuard IS uses a decoupled cloud deployment architecture: the RESTful Node/Express API runs as a Web Service on **Render**, the React/Vite Single-Page Application is served over global edge on **Vercel**, and data persists in **MongoDB Atlas**.
+
+### Live Production Endpoints
+- **Frontend Web Application (Vercel):** `https://fleetguard-is.vercel.app`
+- **Backend REST API (Render):** `https://fleetguard-api-iti0.onrender.com/api`
 
 # 9. Automated Testing Suite (Jest & Vitest)
 Automated unit tests validate business logic, schema rules, RBAC middleware, and frontend session/UI guards in isolation without requiring live database sockets or external API uptime:
@@ -315,4 +322,5 @@ In accordance with institutional academic integrity guidelines on transparent te
 - **External API Integration:** Understanding request handling, timeout protection, and fallback patterns when consuming the Frankfurter Foreign Exchange API.
 - **API Routing & Middleware Architecture:** Clarifying RESTful endpoint conventions, Express router modularization, and JWT role-based access control patterns.
 - **UI & CSS Design:** Refining layout responsiveness, dashboard card grids, status badges, and clean styling across frontend views.
+- **Cloud Deployment & Hosting Configuration:** Assistance with configuring decoupled hosting across Render (Node.js Web Service) and Vercel (Vite SPA), resolving build-time `VITE_API_URL` environment variable injection, and adding `vercel.json` SPA rewrite rules.
 - **Documentation Drafting:** Organizing and formatting technical specifications, schemas, and setup instructions for this `README.md` file.
