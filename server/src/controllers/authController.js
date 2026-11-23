@@ -19,6 +19,7 @@ const register = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      passwordHistory: [],
       role: role || 'Technician',
     });
 
@@ -64,7 +65,7 @@ const login = async (req, res) => {
 // Get all users (Manager only)
 const getUsers = async (req, res) => {
   try {
-    const users = await User.find({}, '-password').sort({ createdAt: -1 });
+    const users = await User.find({}, '-password -passwordHistory').sort({ createdAt: -1 });
     res.json(users);
   } catch (error) {
     res.status(500).json({ error: 'Failed to retrieve team members' });
@@ -115,8 +116,20 @@ const changePassword = async (req, res) => {
       return res.status(400).json({ error: 'Current password is incorrect' });
     }
 
+    const previousHashes = [user.password, ...(user.passwordHistory || [])];
+    for (const oldHash of previousHashes) {
+      const isReused = await bcrypt.compare(newPassword, oldHash);
+      if (isReused) {
+        return res.status(400).json({
+          error: 'New password cannot be the same as your current or recent passwords',
+        });
+      }
+    }
+    const updatedHistory = [user.password, ...(user.passwordHistory || [])].slice(0, 3);
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(newPassword, salt);
+    user.passwordHistory = updatedHistory;
+
     await user.save();
 
     res.json({ message: 'Password updated successfully' });
